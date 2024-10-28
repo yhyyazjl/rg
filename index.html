@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>rg</title>
+    <script src="https://cdn.staticfile.net/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+
+	$(document).ready(function(){
+	  $("#onehour").click(function(){
+	  	$.getJSON("https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type=hour&list_type=normal", function(result) {
+			console.log(result);
+		    
+		    var data = result.data;
+		    // var html = '<ul>';
+		    // for(var i = 0; i < data.stock_list.length; i++)
+		    // {
+		    //     html += '<li>' + data.stock_list[i].order + '  ----------  ' + data.stock_list[i].name + '  ---------  ' + data.stock_list[i].code + '</li>';
+		    // }
+		    // html += '</ul>';
+
+		    var html = '';
+		    for(var i = 0; i < data.stock_list.length; i++)
+		    {
+		        html += '<span class="nospan">' + data.stock_list[i].code + '</span>';
+		        if(data.stock_list[i].order%5 == 0) {
+		    		html += '</br>';
+		    	}
+		    }
+		    
+		    $('#divCustomers').html(html); 
+		    $('#onehour').addClass("pink"); 
+		    $('#day').removeClass("pink");
+		});
+	  });
+
+
+	  $("#day").click(function(){
+	    
+	  	$.getJSON("https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type=day&list_type=normal", function(result) {
+			console.log(result);
+		    var data = result.data;
+		    // var html = '<ul>';
+		    // for(var i = 0; i < data.stock_list.length; i++)
+		    // {
+		    //     html += '<li>' + data.stock_list[i].order + '  ----------  ' + data.stock_list[i].name + '  ---------  ' + data.stock_list[i].code + '</li>';
+		    // }
+		    // html += '</ul>';
+		    
+		    var html = '';
+		    for(var i = 0; i < data.stock_list.length; i++)
+		    {
+		        html += '<span class="nospan">' + data.stock_list[i].code + '</span>';
+		        if(data.stock_list[i].order%5 == 0) {
+		    		html += '</br>';
+		    	}
+		    }
+
+		    $('#divCustomers').html(html); 
+		     $('#day').addClass("pink"); 
+ 		     $('#onehour').removeClass("pink");
+
+		});
+	  });
+	});
+
+</script>    
+
+<style type="text/css">
+.pink
+{
+	background:pink;
+}
+
+.nospan
+{
+	margin-right:20px;
+}
+
+.center-flex {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  height: 100vh; /* 使div的高度为视口高度 */
+}
+
+.center-flex2 {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+}
+</style>
+
+
+</head>
+<body>
+	<div class="center-flex2">
+		<button id="onehour">1小时</button>
+		<button id="day">24小时</button>
+	</div>
+
+	<div class="center-flex">
+		<div id="divCustomers"></div>
+	</div>
+</body>
+</html>
