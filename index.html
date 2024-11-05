@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +8,13 @@
     <script>
 
 	$(document).ready(function(){
+		var onehour = [];
+	  	var day = [];
+	  	
 	  $("#onehour").click(function(){
 	  	$.getJSON("https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type=hour&list_type=normal", function(result) {
 			console.log(result);
-		    
+		    onehour = result.data.stock_list;
 		    var data = result.data;
 		    // var html = '<ul>';
 		    // for(var i = 0; i < data.stock_list.length; i++)
@@ -31,6 +35,7 @@
 		    $('#divCustomers').html(html); 
 		    $('#onehour').addClass("pink"); 
 		    $('#day').removeClass("pink");
+		    $('#suan').removeClass("pink");
 		});
 	  });
 
@@ -39,6 +44,7 @@
 	    
 	  	$.getJSON("https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type=day&list_type=normal", function(result) {
 			console.log(result);
+			day = result.data.stock_list;
 		    var data = result.data;
 		    // var html = '<ul>';
 		    // for(var i = 0; i < data.stock_list.length; i++)
@@ -59,9 +65,47 @@
 		    $('#divCustomers').html(html); 
 		     $('#day').addClass("pink"); 
  		     $('#onehour').removeClass("pink");
+ 		     $('#suan').removeClass("pink");
 
 		});
 	  });
+
+	  $("#suan").click(function(){
+	  	console.log(onehour);
+	  	console.log(day);
+
+	  	var newonehour = onehour.slice(0, 30);
+	  	var newday = day.slice(0, 30);
+	  	var suan = [];
+
+
+		for (var i = 0; i < newonehour.length; i++) {
+            for (var j = 0; j < newday.length; j++) {
+                if(newday[j].code === newonehour[i].code){
+                    suan.push(newday[j].code);
+                }
+        	}
+     	}
+
+     	console.log(suan);
+
+     	var html = '';
+	    for(var i = 0; i < suan.length; i++)
+	    {
+	        html += '<span class="nospan">' + suan[i] + '</span>';
+	        if((i+1)%5 == 0) {
+	    		html += '</br>';
+	    	}
+	    }
+
+	    $('#divCustomers').html(html); 
+	    $('#suan').addClass("pink"); 
+		$('#onehour').removeClass("pink");
+		$('#day').removeClass("pink");
+
+
+	  });
+
 	});
 
 </script>    
@@ -92,10 +136,14 @@
 
 
 </head>
-<body>
+<body><script>
+with(document)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("exparams","category=&userid=&aplus&yunid=&&trid=ac11000117308286481856267ef87a&asid=AQAAAABoWSpnmIIgJAAAAABYKwsN0DXBNA==",id="tb-beacon-aplus",src=(location>"https"?"//g":"//g")+".alicdn.com/alilog/mlog/aplus_v2.js")
+</script>
+
 	<div class="center-flex2">
 		<button id="onehour">1小时</button>
 		<button id="day">24小时</button>
+		<button id="suan">双30</button>
 	</div>
 
 	<div class="center-flex">
